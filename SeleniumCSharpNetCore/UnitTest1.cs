@@ -1,81 +1,59 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using SeleniumCSharpNetCore.Pages;
 using System;
-
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
+using System.IO;
+using System.Reflection;
 
 namespace SeleniumCSharpNetCore
 {
-	public class Tests : DriverHelper
-	{
+    public class Tests : DriverHelper
+    {
 
-	
+        [SetUp]
+        public void Setup()
+        {
+            ChromeOptions option = new ChromeOptions();
+            option.AddArguments("--headless");
+            new DriverManager().SetUpDriver(new ChromeConfig());
+            Console.WriteLine("Setup");
+            Driver = new ChromeDriver(option);
+        }
 
-		[SetUp]
-		public void Setup()
-		{
+        [Test]
+        public void Test1()
+        {
+            Driver.Navigate().GoToUrl("https://demowf.aspnetawesome.com/");
 
-			Console.WriteLine("Setup");
-			ChromeOptions chromeOptions = new ChromeOptions();
-			Driver = new ChromeDriver(@"C:\\drivers");
+            CustomControl.EnterText(Driver.FindElement(By.Id("ContentPlaceHolder1_Meal")), "Mango");
+            CustomControl.Click(Driver.FindElement(By.XPath("//input[@name='ctl00$ContentPlaceHolder1$ChildMeal1']/following-sibling::div[text()='Celery']")));
 
-			//Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+            CustomControl.SelectByText(Driver.FindElement(By.Id("ContentPlaceHolder1_Add1-awed")), "Cauliflower");
 
-		}
+            //CustomControl.ComboBox("ContentPlaceHolder1_AllMealsCombo", "Almonds");
 
-		[Test]
-		public static void Test1()
-		{
-			WebDriverWait wait = new WebDriverWait(Driver,TimeSpan.FromSeconds(30));
-			Driver.Navigate().GoToUrl("https://demo.aspnetawesome.com/");
+            Assert.Pass();
+        }
 
-			//wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.Id("Meal")));
+        //[Test]
+        //public void LoginTest()
+        //{
+        //    Driver.Navigate().GoToUrl("http://eaapp.somee.com/");
 
+        //    HomePage homePage = new HomePage();
+        //    LoginPage loginPage = new LoginPage();
 
-			WebDriverWait FluentWait = new WebDriverWait(Driver, TimeSpan.FromSeconds(60));
-			FluentWait.PollingInterval = TimeSpan.FromSeconds(10);
-			FluentWait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.Id("Meal")));
+        //    homePage.ClickLogin();
+        //    loginPage.EnterUserNameAndPassword("admin", "password");
+        //    loginPage.ClickLogin();
+        //    Assert.That(homePage.IsLogOffExist(), Is.True,"Log off button did not displayed");
 
-			CustomControl.ComboBox("AllMealsCombo", "Almond");
-			IWebElement comboAjax = Driver.FindElement(By.Id("add1-awed"));
-			CustomControl.SelectByValue(comboAjax, "185");
-
-
-			Console.WriteLine("Teste1");
-
-			Assert.Pass();
+        //}
 
 
-		}
 
-
-		[Test]
-		public static void LoginTest()
-		{
-
-			Driver.Navigate().GoToUrl("http://eaapp.somee.com/");
-
-			HomePage homePage = new HomePage();
-			LoginPage loginPage = new LoginPage();
-
-			homePage.ClickLogin();
-
-			loginPage.EnterUserNameAndPassWord();
-			loginPage.ClockLogin();
-
-			Assert.That(homePage.IsLogOffExist(),Is.True,"Log off button did nor displayed!");
-
-		}
-
-		[TearDown]
-		public void TearDown()
-		{
-
-			//Driver.Quit();
-
-		}
-
-	}
+    }
 }

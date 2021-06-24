@@ -1,13 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using OpenQA.Selenium;
 
 namespace SeleniumCSharpNetCore
 {
-	public class DriverHelper
-	{
-		public static IWebDriver Driver {get;set;}
-
-	}
+    public class DriverHelper
+    {
+        public IWebDriver Driver { get; set; }
+    }
 }

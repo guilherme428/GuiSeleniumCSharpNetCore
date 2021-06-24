@@ -5,11 +5,16 @@ using OpenQA.Selenium;
 
 namespace SeleniumCSharpNetCore.Pages
 {
-	class HomePage : DriverHelper
-
+	class HomePage 
 	{
 
-		IWebElement lnkLogin => Driver.FindElement(By.LinkText("Login"));
+		private IWebDriver Driver;
+
+		public HomePage(IWebDriver driver)
+		{
+			Driver = driver;
+		}
+		IWebElement lnkLogin => Driver.FindElement(By.Id("loginLink"));
 
 		IWebElement lnkLogOff => Driver.FindElement(By.LinkText("Log off"));
 
