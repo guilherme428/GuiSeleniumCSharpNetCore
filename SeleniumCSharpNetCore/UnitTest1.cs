@@ -33,8 +33,8 @@ namespace SeleniumCSharpNetCore
 			CustomControl.ComboBox("AllMealsCombo", "Almond");
 
 
-
 			Console.WriteLine("Teste1");
+
 			Assert.Pass();
 
 
